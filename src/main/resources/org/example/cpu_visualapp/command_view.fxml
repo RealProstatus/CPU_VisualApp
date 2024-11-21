@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="b_delete_command" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#delCommand" prefHeight="40.0" prefWidth="40.0" text="✖" />
+      <Button fx:id="b_command_up" layoutX="64.0" layoutY="20.0" mnemonicParsing="false" onAction="#upCommand" prefHeight="40.0" prefWidth="40.0" text="⬆" />
+      <Button fx:id="b_command_down" layoutX="114.0" layoutY="20.0" mnemonicParsing="false" onAction="#downCommand" prefHeight="40.0" prefWidth="40.0" text="⬇" />
+      <Label fx:id="l_command_task" layoutX="166.0" layoutY="32.0" prefHeight="17.0" prefWidth="79.0" text="print" />
+      <Label fx:id="l_command_1st_op" layoutX="280.0" layoutY="32.0" prefHeight="17.0" prefWidth="79.0" />
+      <Label fx:id="l_command_2nd_op" layoutX="387.0" layoutY="32.0" prefHeight="17.0" prefWidth="79.0" />
+   </children>
+</Pane>

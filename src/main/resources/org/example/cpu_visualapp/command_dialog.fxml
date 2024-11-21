@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="#0011ff" layoutX="12.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Новая команда" textAlignment="CENTER" wrappingWidth="325.13671875">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <GridPane layoutX="22.0" layoutY="33.0" prefHeight="35.0" prefWidth="305.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="0.0" prefWidth="58.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.0" minWidth="0.0" prefWidth="79.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.0" minWidth="10.0" prefWidth="89.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.0" minWidth="10.0" prefWidth="83.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="b_confirm_adding_command" mnemonicParsing="false" onAction="#addingNewCommand" prefHeight="25.0" prefWidth="55.0" text="OK" />
+                  <ComboBox fx:id="cb_choice_command_task" prefWidth="150.0" GridPane.columnIndex="1" />
+                  <TextField fx:id="l_fst_operand" text="-1" GridPane.columnIndex="2" />
+                  <TextField fx:id="l_sec_operand" text="-1" GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
+         </children>
+      </Pane>
+   </top>
+</BorderPane>

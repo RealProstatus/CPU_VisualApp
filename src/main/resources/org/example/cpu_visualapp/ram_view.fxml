@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="org.example.controller.RamController">
+   <top>
+      <Label style="-fx-font-size: 14; -fx-text-fill: blue;" text="Значения памяти" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <Label fx:id="l_ram" alignment="TOP_LEFT" prefHeight="221.0" prefWidth="240.0" style="-fx-border-color: black;" textAlignment="JUSTIFY" wrapText="true" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

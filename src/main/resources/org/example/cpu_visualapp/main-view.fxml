@@ -8,8 +8,9 @@
       <Pane prefHeight="60.0" prefWidth="730.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="b_add_command" layoutX="14.0" layoutY="18.0" mnemonicParsing="false" onAction="#addCommand" text="Добавить команду" />
-            <Button fx:id="b_stop_command" layoutX="149.0" layoutY="18.0" mnemonicParsing="false" text="Сбросить выполнение" />
+            <Button fx:id="b_stop_command" layoutX="149.0" layoutY="18.0" mnemonicParsing="false" onAction="#resetExecuting" text="Сбросить выполнение" />
             <Button fx:id="b_execute" layoutX="394.0" layoutY="18.0" mnemonicParsing="false" onAction="#executeCommand" text="Выполнить" />
+            <Button layoutX="580.0" layoutY="18.0" mnemonicParsing="false" onAction="#showReport" text="Отчет" />
          </children>
       </Pane>
    </bottom>

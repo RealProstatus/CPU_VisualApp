@@ -37,12 +37,20 @@ public class MainController implements IObserver {
     void initialize() {
         m.addObserver(this);
 
-        FXMLLoader ld = new FXMLLoader(CPUApp.class.getResource("ram_view.fxml"));
+        FXMLLoader ramld = new FXMLLoader(CPUApp.class.getResource("ram_view.fxml"));
         try {
-            pane_ram.getChildren().add(ld.load());
+            pane_ram.getChildren().add(ramld.load());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        FXMLLoader regld = new FXMLLoader(CPUApp.class.getResource("reg_view.fxml"));
+        try {
+            pane_reg.getChildren().add(regld.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
@@ -68,6 +76,32 @@ public class MainController implements IObserver {
     }
 
     @FXML
+    public void showReport(){
+        FXMLLoader loader = new FXMLLoader(CPUApp.class.getResource(
+                "report_dialog.fxml"));
+        try{
+            Stage dialog = new Stage();
+            ReportController rc = new ReportController();
+            loader.setController(rc);
+            BorderPane bp = loader.load();
+            dialog.setTitle("Report");
+            dialog.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(bp);
+            dialog.setScene(scene);
+            dialog.showAndWait();
+
+            rc.show();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void resetExecuting(){
+        m.hardResetExecution();
+    }
+
+    @FXML
     public void executeCommand(){
         m.executeCommand();
     }
@@ -77,12 +111,13 @@ public class MainController implements IObserver {
         vBox.getChildren().clear();
         for(Command c: m.getProgram()){
             CommandController cc = new CommandController();
-            FXMLLoader commandLoader = new FXMLLoader
-                    (CPUApp.class.getResource("command_view.fxml"));
+            FXMLLoader commandLoader = new FXMLLoader(CPUApp.class.getResource("command_view.fxml"));
             commandLoader.setController(cc);
             try{
+                if(c == m.getCur_command()){
+                    cc.itsCurrentCommand();
+                }
                 Pane pane = commandLoader.load();
-                if(c == m.getCurrentCommand()){cc.itsCurrentCommand();}
                 cc.setCommand(c);
                 vBox.getChildren().add(pane);
             }catch (IOException e){

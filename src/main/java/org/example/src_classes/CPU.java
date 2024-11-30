@@ -99,7 +99,7 @@ public class CPU implements ICPU{
     @Override
     public Map<Integer, Integer> getRamInfo() {
         Map<Integer, Integer> res = new HashMap<Integer, Integer>();
-        for(int i = 0; i < 25; i++){
+        for(int i = 0; i < 30; i++){
             res.put(i, ram[i]);
         }
         return res;

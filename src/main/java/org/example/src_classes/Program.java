@@ -1,26 +1,29 @@
 package org.example.src_classes;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class Program implements Iterable<Command>{
-    private final ArrayList<Command> commands = new ArrayList<>();
+    private final CopyOnWriteArrayList<Command> commands = new CopyOnWriteArrayList<>();
 
     public void add(Command c) { commands.add(c);}
     public void remove(Command c){ commands.remove(c); }
+
     public void commandDown(Command c){
         try {
             commands.add(commands.indexOf(c)+2,c);
             commands.remove(c);
         } catch (IndexOutOfBoundsException e) {}
     }
+
     public void commandUp(Command c){
         try {
             commands.add(commands.indexOf(c)-1,c);
             commands.remove(commands.indexOf(c)+2);
         } catch (IndexOutOfBoundsException e) {}
     }
-    public ListIterator<Command> reset(){ return commands.listIterator(0); }
+
     public Command getCommand(int index){
         try {
             return commands.get(index);
@@ -31,8 +34,7 @@ public class Program implements Iterable<Command>{
     }
 
     @Override
-    public Iterator<Command> iterator() { return commands.iterator(); }
-    public ListIterator<Command> listIterator(){ return commands.listIterator();}
+    public ListIterator<Command> iterator() { return commands.listIterator(); }
 
     public String mostPopCommand(){
         System.out.println("Самая популярная команда:");

@@ -2,20 +2,59 @@ package org.example.model;
 
 import org.example.src_classes.Command;
 
+import java.sql.*;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-public class DAO_memory implements Iterable<Command> {
+public class DAO_DB extends DAO_memory {
+    Connection connection;
 
-    protected final CopyOnWriteArrayList<Command> commands = new CopyOnWriteArrayList<>();
+    void connect() {
+        try{
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:coms.db");
+            System.out.println("DB opened successfully");
+        }catch (ClassNotFoundException e){
+            System.out.println(e.getMessage());
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
 
-    @Override
-    public ListIterator<Command> iterator() { return commands.listIterator(); }
+    public DAO_DB() {
+        connect();
+        updateList();
+    }
 
-    public void add(Command c) { commands.add(c);}
+    protected void updateList(){
+        commands.clear();
+        try{
+            Statement st = connection.createStatement();
+            ResultSet r = st.executeQuery("select * from AllCommands");
+            while(r.next()){
+                commands.add(new Command(r.getString("Task"),
+                        r.getString("Operand1"),
+                        r.getString("Operand2")));
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void add(Command c) {
+        try {
+            PreparedStatement pst = connection.prepareStatement("" +
+                    "INSERT INTO AllCommands(Task, Operand1, Operand2) VALUES (?,?,?)");
+            pst.setString(1,c.getTask());
+            pst.setInt(2,c.getFst());
+            pst.setInt(3,c.getSec());
+            pst.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        updateList();
+    }
     public void remove(Command c){ commands.remove(c); }
 
     public void commandDown(Command c){

@@ -5,6 +5,10 @@ module org.example.cpu_visualapp {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
 
+    requires java.sql;
+    requires org.xerial.sqlitejdbc;
+
+
     opens org.example.cpu_visualapp to javafx.fxml;
     opens org.example.model to javafx.fxml;
     opens org.example.src_classes to javafx.fxml;

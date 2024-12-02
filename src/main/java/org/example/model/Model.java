@@ -8,8 +8,9 @@ import java.util.ListIterator;
 import java.util.Map;
 
 public class Model {
+    DAO_memory dao;
     Executor executor;
-    Program program;
+    //Program program;
     ArrayList<IObserver> allObservers = new ArrayList<>();
     ListIterator<Command> iterator;
     Command cur_command;
@@ -20,8 +21,8 @@ public class Model {
     public Model() {
         ICPU cpu = BCpu.build();
         executor = new Executor(cpu);
-        program = new Program();
-        iterator = program.iterator();
+        dao = DAO_factory.build();
+        iterator = dao.iterator();
         cur_command = null;
     }
 
@@ -34,11 +35,11 @@ public class Model {
         cur_command = null;
         call();
     }
-    public void addCommand(Command c){ program.add(c); resetExecution(); call(); }
-    public void deleteCommand(Command c){ program.remove(c); resetExecution(); call(); }
+    public void addCommand(Command c){ dao.add(c); resetExecution(); call(); }
+    public void deleteCommand(Command c){ dao.remove(c); resetExecution(); call(); }
     public void executeCommand(){
         if (cur_command == null){
-            iterator = program.iterator();
+            iterator = dao.iterator();
         }
         if(iterator.hasNext()){
             cur_command = iterator.next();
@@ -46,8 +47,8 @@ public class Model {
             call();
         }
     }
-    public void moveCommandUp(Command c){ program.commandUp(c); resetExecution(); call(); }
-    public void moveCommandDown(Command c){ program.commandDown(c); resetExecution(); call(); }
+    public void moveCommandUp(Command c){ dao.commandUp(c); resetExecution(); call(); }
+    public void moveCommandDown(Command c){ dao.commandDown(c); resetExecution(); call(); }
 
 
     public Map<Integer,Integer> getRegister(){
@@ -57,9 +58,9 @@ public class Model {
         return executor.getRamInfo();
     }
     public List<Map.Entry<String,Long>> getSortedListOfCommands(){
-        return program.sortedListOfCommands();
+        return dao.sortedListOfCommands();
     }
 
-    public Program getProgram(){ return program; }
+    public DAO_memory getProgram(){ return dao; }
     public Command getCur_command(){return cur_command;}
 }

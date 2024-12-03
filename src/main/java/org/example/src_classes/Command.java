@@ -1,6 +1,7 @@
 package org.example.src_classes;
 
 public class Command {
+    private int id =-1;
     private String task;
     private int fst, sec;
 
@@ -23,6 +24,13 @@ public class Command {
     }
 
     public Command(String s1, String s2, String s3){
+        task = s1;
+        fst = Integer.parseInt(s2);
+        sec = Integer.parseInt(s3);
+    }
+
+    public Command(String s1, String s2, String s3,int id){
+        this.id = id;
         task = s1;
         fst = Integer.parseInt(s2);
         sec = Integer.parseInt(s3);
@@ -59,4 +67,11 @@ public class Command {
         };
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

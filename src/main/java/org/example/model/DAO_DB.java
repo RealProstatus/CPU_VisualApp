@@ -15,9 +15,7 @@ public class DAO_DB extends DAO_memory {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:coms.db");
             System.out.println("DB opened successfully");
-        }catch (ClassNotFoundException e){
-            System.out.println(e.getMessage());
-        }catch (SQLException e){
+        }catch (ClassNotFoundException | SQLException e){
             System.out.println(e.getMessage());
         }
     }
@@ -35,8 +33,27 @@ public class DAO_DB extends DAO_memory {
             while(r.next()){
                 commands.add(new Command(r.getString("Task"),
                         r.getString("Operand1"),
-                        r.getString("Operand2")));
+                        r.getString("Operand2"),
+                        r.getInt("ID")));
             }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void updateDB(){
+        try{
+            PreparedStatement pst = connection.prepareStatement("" +
+                    "UPDATE AllCommands SET Task = ?, Operand1 = ?," +
+                    "Operand2 = ? WHERE ID = ?");
+            for(Command com: commands){
+                pst.setString(1,com.getTask());
+                pst.setInt(2,com.getFst());
+                pst.setInt(3,com.getSec());
+                pst.setInt(4,com.getId());
+                pst.addBatch(); //добавляем запрос по конкретной команде в пакет
+            }
+            pst.executeBatch(); //выполняем пакет запросов
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -55,62 +72,34 @@ public class DAO_DB extends DAO_memory {
         }
         updateList();
     }
-    public void remove(Command c){ commands.remove(c); }
-
-    public void commandDown(Command c){
+    public void remove(Command c){
         try {
-            commands.add(commands.indexOf(c)+2,c);
-            commands.remove(c);
-        } catch (IndexOutOfBoundsException e) {}
-    }
-
-    public void commandUp(Command c){
-        try {
-            commands.add(commands.indexOf(c)-1,c);
-            commands.remove(commands.indexOf(c)+2);
-        } catch (IndexOutOfBoundsException e) {}
-    }
-
-    public Command getCommand(int index){
-        try {
-            return commands.get(index);
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("!");
-            return commands.getLast();
+            PreparedStatement pst = connection.prepareStatement("" +
+                    "DELETE FROM AllCommands WHERE ID=?");
+            pst.setInt(1,c.getId());
+            pst.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
-    }
-    public String mostPopCommand(){
-        System.out.println("Самая популярная команда:");
-        Map.Entry<String,Long> popMark = getFrequencyMap()
-                .entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue())
-                .orElse(null);
-        if(popMark != null)
-            return popMark.getKey();
-        else{
-            throw new RuntimeException("Error with mostPopCommand");
-        }
+        updateList();
     }
 
-    public void rangeOfAddresses(){
-        System.out.println("Интервал используемой памяти: ");
-        int max = -1, min = 1024;
-        List<Command> sample = commands
-                .stream()
-                .filter((val) -> val.getTask().equals("init") || val.getTask().equals("st"))
-                .toList();
-        for(Command c: sample){
-            int tmp = 0;
-            if (c.getTask().equals("init")) tmp = c.getFst();
-            if (c.getTask().equals("st")) tmp = c.getSec();
+    public void commandDown(Command c){//достаточно лишь свапнуть id записей в таблице
+        int tmp = c.getId();
+        c.setId(commands.get(commands.indexOf(c)+1).getId());
+        commands.get(commands.indexOf(c)+1).setId(tmp);
 
-            if (tmp < min) min = tmp;
-            if (tmp > max) max = tmp;
-        }
-        System.out.println("{"+min+","+max+"}");
-        System.out.println();
+        updateDB();//выгрузили новые данные в бд
+        updateList();
+    }
 
+    public void commandUp(Command c){//достаточно лишь свапнуть id записей в таблице
+        int tmp = c.getId();
+        c.setId(commands.get(commands.indexOf(c)-1).getId());
+        commands.get(commands.indexOf(c)-1).setId(tmp);
+
+        updateDB();//выгрузили новые данные в бд
+        updateList();
     }
 
     public List<Map.Entry<String,Long>> sortedListOfCommands(){
